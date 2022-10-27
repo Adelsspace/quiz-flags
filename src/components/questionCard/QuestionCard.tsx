@@ -24,7 +24,7 @@ const QuestionCard: React.FC<QuestionCardOptions> = ({
     <p className="number">
       Вопрос: {questionNumber} / {totalQuestions}
     </p>
-    <img src={question} alt={`изображение флага ${userAnswer?.correct}`}></img>
+    <img src={question} alt={`изображение флага ${question}`}></img>
     <div>
       {answers.map((answer) => (
         <ButtonWrapper
