@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { fetch2 } from "./API";
 import QuestionCard from "./components/questionCard/QuestionCard";
 import { GlobalStyle, Wrapper } from "./App.styles";
 import { shuffleArray } from "./utils";
+import { ISOCountryNames, countryISO } from "./ISOCountryNames";
 
 export type AnswerObjectOptions = {
   flag?: string;
@@ -43,13 +43,11 @@ function App() {
     6. пушим в array вопросов
     */
     try {
-      const res = await fetch2();
-      if (res === "Failed to fetch") throw new Error(res);
       const answersArray = [];
       for (let i = 0; i < 10; i++) {
         const randomIdsArray: number[] = [];
         for (let i = 0; i < 4; i++) {
-          let randomNumber: number = Math.floor(Math.random() * 196);
+          let randomNumber: number = Math.floor(Math.random() * 246);
           if (!randomIdsArray.includes(randomNumber)) {
             randomIdsArray.push(randomNumber);
             i++;
@@ -59,22 +57,21 @@ function App() {
 
         const countryNames: string[] = [];
         for (let i = 0; i < randomIdsArray.length; i++) {
-          countryNames.push(res[randomIdsArray[i]].name);
+          countryNames.push(ISOCountryNames[countryISO[randomIdsArray[i]]]);
         }
+
         const correctAnswer = countryNames[0];
 
         const shuffledQuestions = shuffleArray(countryNames);
+        const countryFlag = countryISO[randomIdsArray[0]].toLowerCase();
 
         const answer = {
           shuffledQuestions,
           correctAnswer,
-          flag: `https://world-of-flags-backend.herokuapp.com${
-            res[randomIdsArray[0]].flag
-          }`,
+          flag: `https://flagcdn.com/${countryFlag}.svg`,
         };
         answersArray.push(answer);
       }
-
       setQuestions(answersArray);
       setScore(0);
       setUserAnswers([]);
